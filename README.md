@@ -24,5 +24,7 @@ If you use this code or the CRW method in general for your CG parametrization
 please cite one or more of the following papers:
 
 E. Brini, V. Marcon and N.F.A. van der Vegt: PCCP, 2009, 11, p. 10468 (DOI: 10.1039/c0cp02888f)
+
 G. Deichmann and N.F.A. van der Vegt: JCTC, 2017, 13, p. 6158 (DOI: 10.1021/acs.jctc.7b00611)
+
 G. Deichmann and N.F.A. van der Vegt: PCCP, 2018, submitted for publication. 
