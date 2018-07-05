@@ -1,0 +1,80 @@
+
+; RUN CONTROL PARAMETERS
+integrator               = sd
+
+; Selection of energy groups
+energygrps               = Bead1 Bead2
+
+; NEIGHBORSEARCHING PARAMETERS
+; cut-off scheme (group: using charge groups, Verlet: particle based cut-offs)
+cutoff-scheme            = Group
+; nblist update frequency
+nstlist                  = 10
+; ns algorithm (simple or grid)
+ns-type                  = simple
+; Periodic boundary conditions: xyz, no, xy
+pbc                      = no 
+periodic-molecules       = no
+; Allowed energy drift due to the Verlet buffer in kJ/mol/ps per atom,
+; a value of -1 means: use rlist
+verlet-buffer-drift      = 0.005
+; nblist cut-off        
+rlist                    = 1.4
+
+; OPTIONS FOR ELECTROSTATICS AND VDW
+; Method for doing electrostatics
+coulombtype              = Cut-off
+coulomb-modifier         = Potential-shift-Verlet
+rcoulomb-switch          = 0
+rcoulomb                 = 1.4
+; Relative dielectric constant for the medium and the reaction field
+epsilon-r                = 1
+epsilon-rf               = 0
+; Method for doing Van der Waals
+vdw-type                 = Cut-off
+vdw-modifier             = Potential-shift-Verlet
+; cut-off lengths       
+rvdw-switch              = 0
+rvdw                     = 1.4
+
+; OPTIONS FOR WEAK COUPLING ALGORITHMS
+; Temperature coupling  
+tcoupl                   = No
+nsttcouple               = -1 
+nh-chain-length          = 10
+print-nose-hoover-chain-variables = no
+; Groups to couple separately
+tc-grps                  = system 
+; Time constant (ps) and reference temperature (K)
+tau-t                    = 2 
+ref-t                    = 300
+
+; ENERGY GROUP EXCLUSIONS
+; Pairs of energy groups for which all non-bonded interactions are excluded
+energygrp-excl           = ; Bead1 Bead2 
+
+; COM PULLING          
+; Pull type: no, umbrella, constraint or constant-force
+pull                     = constraint
+; Pull geometry: distance, direction, cylinder or position
+pull_geometry            = distance
+; Switch from r1 to r0 in case of dynamic reaction force
+pull_start               = yes ;this...
+; Number of pull groups
+pull_ngroups             = 1
+; Group name, weight (default all 1), vector, init, rate (nm/ps), kJ/(mol*nm^2)
+pull_group0              = Bead1
+pull_group1              = Bead2
+pull_init1               = 0.0 ;...and this will ensure initial distance is constrained
+
+; User defined thingies
+userint1                 = 200 ;MC steps
+userint2                 = 1 ;MC traj output frequency
+userint3                 = 1 ;MC log frequency
+userint4                 = 10 : MC force log frequency
+userreal1                = .3 ; MC move ratio (probability of rotation)
+userreal2                = 180 ; Max rotation for move 0
+userreal3                = 180 ; Max rotation for move 1
+
+; VARIOUS PREPROCESSING OPTIONS
+userreal4                = 0

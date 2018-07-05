@@ -1,0 +1,6 @@
+[ atomtypes ]
+; name  bond_type    mass    charge   ptype          sigma      epsilon
+ H   H   1     1.008     0.06       A    2.5000e-01 0.12552  ; 0.03 kcal/mol
+C_3  C   6    12.011     -0.18      A    3.5000e-01 0.276144 ; 0.066 kcal/mol
+C_2  C   6    12.011     -0.12      A    3.5000e-01 0.276144 ; 0.066 kcal/mol
+C_G  C   6    12.011     0.00       A    3.5500e-01 0.29288 ; 0.07 kcal/mol

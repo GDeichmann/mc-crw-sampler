@@ -1,0 +1,16 @@
+[ bondtypes ]
+; i    j  func       b0          kb
+   C     C      1   0.15290 224262   ;268.00*2 kcal/molA²    1.5290 A      ; 
+   C     H      1   0.1090  284512 ;340.00*2 kcal/molA²    1.090 A      ;
+
+[ angletypes ]
+; i    j     k  func       a0          ka
+   C   C   C    1        112.700     488.2728 ;  58.350*2 kcal/molrad²   112.700 °
+   C   C   H    1        110.700     313.8  ;  37.500*2 kcal/molrad²   110.700 °
+   H   C   H    1        107.800     276.144  ;  33.000*2 kcal/molrad²   107.800 °
+
+[ dihedraltypes ]
+; i    j     k    l  func       four coefficients          
+ C    C    C    C  5  7.28016   -0.656888   1.167336    0.0; 1.74000  -0.15700   0.27900   0.00000  kcal/mol
+ C    C    C    H  5  0.0        0.0        1.531344    0.0; 0.00000   0.00000   0.36600   0.00000 kcal/mol
+ H    C    C    H  5  0.0        0.0        1.330512    0.0; 0.00000   0.00000   0.31800   0.00000 kcal/mol

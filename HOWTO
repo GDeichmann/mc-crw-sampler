@@ -1,0 +1,107 @@
+I. General Remarks
+
+The purpose of this code is to sample two molecules in vacuo, keeping the distance between two groups of atoms constant.
+Two kinds of Monte Carlo moves are performed:
+    1. Rotation of a whole molecule around a randomly chosen spatial axis (x,y or z)
+    2. Rotation of a part of a molecule around a bond (torsional rotation)
+All bond lengths and bond angles will remain in their initial state.
+After each move the molecules are shifted such that the initial distance between the two groups of interest is restored.
+Interactions between the groups of interest can be switched off completely or partially.
+
+
+II. Input and output files
+
+The mc-crw-sampler requires at least a Gromacs 4.6 run input file (.tpr) file named 'topol.tpr'
+In addition you can provide a file called 'data.blacklist' listing bonds that are excluded from torsional rotations.
+
+The program will generate three output files:
+    1. A trajectory (mctraj.gro)
+    2. An energy log file (mclog)
+    3. A log file of the intermolecular force projected onto the distance vector of the groups of interest (flog)
+
+
+III. Command line options
+
+-c      Initial configuration (.gro format)
+-o      Trajectory file (.gro or .xtc format)
+-s      Run input file (Gromacs 4.6 .tpr file)
+
+-excl_q     Exclude coulomb interactions
+-excl_vdw   Exclude LJ interactions
+
+
+IV. Correct setup of run input
+
+A. Run parameters
+
+An examplary run file 'grompp.mdp' is provided in the example/ directory.
+
+The groups of interest have to be defined using the pull-code section of the .mdp file:
+
+; COM PULLING
+; Pull type: no, umbrella, constraint or constant-force
+pull                     = constraint
+; Pull geometry: distance, direction, cylinder or position
+pull_geometry            = distance
+; Switch from r1 to r0 in case of dynamic reaction force
+pull_start               = yes ;this...
+; Number of pull groups
+pull_ngroups             = 1
+; Group name, weight (default all 1), vector, init, rate (nm/ps), kJ/(mol*nm^2)
+pull_group0              = Bead1  
+pull_group1              = Bead2
+pull_init1               = 0.0 ;...and this will ensure initial distance is constrained
+
+
+Note that the groups HAVE to be 0 and 1.
+Note further that the initial distance as found in the initial configuration will be constrained.
+
+The MC run parameters are set using the userint and userreal values in the .mdp file:
+
+userint1                 = 200 ;MC steps
+userint2                 = 1 ;MC traj output frequency
+userint3                 = 1 ;MC log frequency
+userint4                 = 10 : MC force log frequency
+userreal1                = .3 ; MC move ratio (probability of spatial rotation)
+userreal2                = 180 ; Max rotation for spatial rotation in angles
+userreal3                = 180 ; Max rotation for torsional rotation in angles
+
+
+Further values from the .mdp-file that are used in the code are:
+    -Cutoff values
+    -Reference temperature of the first T-coupling group
+
+
+B. Correct topology setup
+
+The torsional moves are coded such that the molecule is essentially split in two at the bond of interest 
+and one part of the molecule is moved while the other remains at its current position.
+This formulation necessitates a bit of discipline when setting up the topology.
+The requirements for the order of topology atoms can be formulated as follows:
+    1. The atom number should constantly increase along the longest chain of the molecule.
+    2. The same holds for branches.
+    3. Branches should be 'branched off' in the numbering before continuing along the main chain.
+
+Below this mode of numbering is sketched for a rather branched molecule consisting of '*' atoms:
+
+  3 4 5   10
+  *-*-*   *
+  |       | 13 14 15
+*-*-*-*-*-*-*--*--*
+1 2 6 7 8 9\
+           *-*
+          11 12
+
+
+C. Black listing bonds
+
+If you do not want a bond to be 'rotatable' you can exclude it in a file called 'data.blacklist'.
+This is useful for double bonds, rings, and the like.
+
+This file will look as follows:
+
+#One line of comment or something else
+N         #number of bonds that follow
+n i j     #n= bond number from 1 to N,  i and j are two atoms (i<j)
+
+
